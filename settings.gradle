@@ -1,0 +1,2 @@
+rootProject.name = "Lampu"
+include ':app'

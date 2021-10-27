@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_cek"
+    tools:context=".cekLampu">
+
+    <LinearLayout
+        android:id="@+id/layoutProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="135dp">
+        <me.bastanfar.semicirclearcprogressbar.SemiCircleArcProgressBar
+            android:id="@+id/progressBar_Arus"
+            android:layout_width="120dp"
+            android:layout_height="75dp"
+            app:percent="0"
+            app:progressBarColor="#ff00ff"
+            app:progressPlaceHolderColor="#00ffff"
+            app:progressBarWidth="20"
+            app:progressPlaceHolderWidth="45"
+            android:layout_marginLeft="30dp" />
+
+        <me.bastanfar.semicirclearcprogressbar.SemiCircleArcProgressBar
+            android:id="@+id/progressBar_Tegangan"
+            android:layout_width="120dp"
+            android:layout_height="75dp"
+            app:percent="0"
+            app:progressBarColor="#ff00ff"
+            app:progressPlaceHolderColor="#00ffff"
+            app:progressBarWidth="20"
+            app:progressPlaceHolderWidth="45"/>
+
+        <me.bastanfar.semicirclearcprogressbar.SemiCircleArcProgressBar
+            android:id="@+id/progressBar_Daya"
+            android:layout_width="120dp"
+            android:layout_height="75dp"
+            app:percent="0"
+            app:progressBarColor="#ff00ff"
+            app:progressPlaceHolderColor="#00ffff"
+            app:progressBarWidth="20"
+            app:progressPlaceHolderWidth="45"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutProgress">
+        <TextView
+            android:id="@+id/textArus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBar_Arus"
+            android:text="0 A"
+            android:layout_marginLeft="75dp"/>
+
+        <TextView
+            android:id="@+id/textTegangan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBar_Tegangan"
+            android:text="0 V"
+            android:layout_marginLeft="85dp"/>
+
+        <TextView
+            android:id="@+id/textDaya"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progressBar_Daya"
+            android:text="0 W"
+            android:layout_marginLeft="85dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutText">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arus"
+            android:layout_marginLeft="75dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tegangan"
+            android:layout_marginLeft="75dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Daya"
+            android:layout_marginLeft="70dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgInfo1"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:background="@drawable/gagal"
+        android:layout_below="@id/layoutText2"
+        android:layout_marginTop="70dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/txtInfo1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgInfo1"
+        android:layout_alignLeft="@id/imgInfo1"
+        android:layout_alignRight="@id/imgInfo1"
+        android:layout_alignBottom="@id/imgInfo1"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/tidak_ada_koneksi_internet"
+        android:textColor="@color/white"/>
+
+    <ImageView
+        android:id="@+id/imgInfo2"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:background="@drawable/gagal"
+        android:layout_below="@id/imgInfo1"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/txtInfo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgInfo2"
+        android:layout_alignLeft="@id/imgInfo2"
+        android:layout_alignRight="@id/imgInfo2"
+        android:layout_alignBottom="@id/imgInfo2"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/tidak_ada_koneksi_internet"
+        android:textColor="@color/white"/>
+
+    <ImageView
+        android:id="@+id/imgInfo3"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:background="@drawable/gagal"
+        android:layout_below="@id/imgInfo2"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/txtInfo3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgInfo3"
+        android:layout_alignLeft="@id/imgInfo3"
+        android:layout_alignRight="@id/imgInfo3"
+        android:layout_alignBottom="@id/imgInfo3"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/tidak_ada_koneksi_internet"
+        android:textColor="@color/white"/>
+
+    <ImageView
+        android:id="@+id/imgInfo4"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:background="@drawable/gagal"
+        android:layout_below="@id/imgInfo3"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/txtInfo4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgInfo4"
+        android:layout_alignLeft="@id/imgInfo4"
+        android:layout_alignRight="@id/imgInfo4"
+        android:layout_alignBottom="@id/imgInfo4"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/tidak_ada_koneksi_internet"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/txtKet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgInfo4"
+        android:text="Keterangan :
+        \nJika notifikasi dan sensor tidak berubah maka perangkat NodeMCU tidak menyala atau tidak tersambung koneksi internet"
+        android:layout_marginTop="40dp"
+        android:textSize="13sp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/black"/>
+</RelativeLayout>
