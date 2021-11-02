@@ -11,23 +11,35 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.widget.Toast;
 
 
+import com.evanfauzi.lampu.adapter.CekAdapter;
+import com.evanfauzi.lampu.model.ModelLampu;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+
 import me.bastanfar.semicirclearcprogressbar.*;
+
+import static com.evanfauzi.lampu.MainActivity.setWindowFlag;
 
 //import me.bastanfar.semicirclearcprogressbar.SemiCircleArcProgressBar;
 
-public class cekLampu extends AppCompatActivity {
+public class cekLampu extends AppCompatActivity implements CekAdapter.FirebaseDataListener {
     SemiCircleArcProgressBar arus;
     SemiCircleArcProgressBar tegangan;
     SemiCircleArcProgressBar daya;
@@ -43,6 +55,10 @@ public class cekLampu extends AppCompatActivity {
     ImageView imgInfo3;
     ImageView imgInfo4;
     Intent back;
+    private RecyclerView cekRecyclerView;
+    private CekAdapter cekAdapter;
+    private ArrayList<ModelLampu> daftarLampu;
+    private DatabaseReference mDatabaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,25 +88,48 @@ public class cekLampu extends AppCompatActivity {
         txtArus = findViewById(R.id.textArus);
         txtTegangan = findViewById(R.id.textTegangan);
         txtDaya = findViewById(R.id.textDaya);
-        txtInfo1 = findViewById(R.id.txtInfo1);
-        txtInfo2 = findViewById(R.id.txtInfo2);
-        txtInfo3 = findViewById(R.id.txtInfo3);
-        txtInfo4 = findViewById(R.id.txtInfo4);
-        imgInfo1 = findViewById(R.id.imgInfo1);
-        imgInfo2 = findViewById(R.id.imgInfo2);
-        imgInfo3 = findViewById(R.id.imgInfo3);
-        imgInfo4 = findViewById(R.id.imgInfo4);
+//        txtInfo1 = findViewById(R.id.txtInfo1);
+//        txtInfo2 = findViewById(R.id.txtInfo2);
+//        txtInfo3 = findViewById(R.id.txtInfo3);
+//        txtInfo4 = findViewById(R.id.txtInfo4);
+//        imgInfo1 = findViewById(R.id.imgInfo1);
+//        imgInfo2 = findViewById(R.id.imgInfo2);
+//        imgInfo3 = findViewById(R.id.imgInfo3);
+//        imgInfo4 = findViewById(R.id.imgInfo4);
 
+        cekRecyclerView = findViewById(R.id.recyclerCekView);
+        cekRecyclerView.setHasFixedSize(true);
+        cekRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FirebaseDatabase fireBase = FirebaseDatabase.getInstance();
         DatabaseReference arusRef = fireBase.getReference("arus");
         DatabaseReference teganganRef = fireBase.getReference("tegangan");
         DatabaseReference dayaRef = fireBase.getReference("daya");
-        DatabaseReference cekRef1 = fireBase.getReference("cek1");
-        DatabaseReference cekRef2 = fireBase.getReference("cek2");
-        DatabaseReference cekRef3 = fireBase.getReference("cek3");
-        DatabaseReference cekRef4 = fireBase.getReference("cek4");
+//        DatabaseReference cekRef1 = fireBase.getReference("cek1");
+//        DatabaseReference cekRef2 = fireBase.getReference("cek2");
+//        DatabaseReference cekRef3 = fireBase.getReference("cek3");
+//        DatabaseReference cekRef4 = fireBase.getReference("cek4");
+        mDatabaseReference = fireBase.getReference("data_lampu").child("lampu");
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                daftarLampu = new ArrayList<>();
+                for (DataSnapshot mDataSnapshot : dataSnapshot.getChildren()){
+                    ModelLampu lampu = mDataSnapshot.getValue(ModelLampu.class);
+                    lampu.setKey(mDataSnapshot.getKey());
+                    daftarLampu.add(lampu);
+                }
+                cekAdapter = new CekAdapter(cekLampu.this, daftarLampu, mDatabaseReference);
+                cekRecyclerView.setAdapter(cekAdapter);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(cekLampu.this,
+                        error.getDetails() + " " + error.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
 
         arusRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,105 +173,105 @@ public class cekLampu extends AppCompatActivity {
             }
         });
 
-        cekRef1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                int cek1 = dataSnapshot.getValue(int.class);
-                if(cek1==100){
-                    imgInfo1.setBackgroundResource(R.drawable.sukses);
-                    txtInfo1.setText("1. Lampu 1 berhasil dinyalakan");
-                }else if(cek1==101){
-                    imgInfo1.setBackgroundResource(R.drawable.gagal);
-                    txtInfo1.setText("1. Lampu 1 gagal dinyalakan, silahkan cek lampunya.");
-                }else if(cek1==111){
-                    imgInfo1.setBackgroundResource(R.drawable.gagal);
-                    txtInfo1.setText("1. Lampu 1 berhasil dimatikan");
-                }else if(cek1==110){
-                    imgInfo1.setBackgroundResource(R.drawable.gagal);
-                    txtInfo1.setText("1. Lampu 1 gagal dimatikan, silahkan cek kabel lampunya");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
-
-            }
-        });
-
-        cekRef2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                int cek2 = dataSnapshot.getValue(int.class);
-                if(cek2==100){
-                    imgInfo2.setBackgroundResource(R.drawable.sukses);
-                    txtInfo2.setText("2. Lampu 2 berhasil dinyalakan");
-                }else if(cek2==101){
-                    imgInfo2.setBackgroundResource(R.drawable.gagal);
-                    txtInfo2.setText("2. Lampu 2 gagal dinyalakan, silahkan cek lampunya.");
-                }else if(cek2==111){
-                    imgInfo2.setBackgroundResource(R.drawable.gagal);
-                    txtInfo2.setText("2. Lampu 2 berhasil dimatikan");
-                }else if(cek2==110){
-                    imgInfo2.setBackgroundResource(R.drawable.gagal);
-                    txtInfo2.setText("2. Lampu 2 gagal dimatikan, silahkan cek kabel lampunya");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
-
-            }
-        });
-
-        cekRef3.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                int cek3 = dataSnapshot.getValue(int.class);
-                if(cek3==100){
-                    imgInfo3.setBackgroundResource(R.drawable.sukses);
-                    txtInfo3.setText("3. Lampu 3 berhasil dinyalakan");
-                }else if(cek3==101){
-                    imgInfo3.setBackgroundResource(R.drawable.gagal);
-                    txtInfo3.setText("3. Lampu 3 gagal dinyalakan, silahkan cek lampunya.");
-                }else if(cek3==111){
-                    imgInfo3.setBackgroundResource(R.drawable.gagal);
-                    txtInfo3.setText("3. Lampu 3 berhasil dimatikan");
-                }else if(cek3==110){
-                    imgInfo3.setBackgroundResource(R.drawable.gagal);
-                    txtInfo3.setText("3. Lampu 3 gagal dimatikan, silahkan cek kabel lampunya");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
-
-            }
-        });
-
-        cekRef4.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                int cek4 = dataSnapshot.getValue(int.class);
-                if(cek4==100){
-                    imgInfo4.setBackgroundResource(R.drawable.sukses);
-                    txtInfo4.setText("4. Lampu 4 berhasil dinyalakan");
-                }else if(cek4==101){
-                    imgInfo4.setBackgroundResource(R.drawable.gagal);
-                    txtInfo4.setText("4. Lampu 4 gagal dinyalakan, silahkan cek lampunya.");
-                }else if(cek4==111){
-                    imgInfo4.setBackgroundResource(R.drawable.gagal);
-                    txtInfo4.setText("4. Lampu 4 berhasil dimatikan");
-                }else if(cek4==110){
-                    imgInfo4.setBackgroundResource(R.drawable.gagal);
-                    txtInfo4.setText("4. Lampu 4 gagal dimatikan, silahkan cek kabel lampunya");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
-
-            }
-        });
+//        cekRef1.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+//                int cek1 = dataSnapshot.getValue(int.class);
+//                if(cek1==100){
+//                    imgInfo1.setBackgroundResource(R.drawable.sukses);
+//                    txtInfo1.setText("1. Lampu 1 berhasil dinyalakan");
+//                }else if(cek1==101){
+//                    imgInfo1.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo1.setText("1. Lampu 1 gagal dinyalakan, silahkan cek lampunya.");
+//                }else if(cek1==111){
+//                    imgInfo1.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo1.setText("1. Lampu 1 berhasil dimatikan");
+//                }else if(cek1==110){
+//                    imgInfo1.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo1.setText("1. Lampu 1 gagal dimatikan, silahkan cek kabel lampunya");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        cekRef2.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+//                int cek2 = dataSnapshot.getValue(int.class);
+//                if(cek2==100){
+//                    imgInfo2.setBackgroundResource(R.drawable.sukses);
+//                    txtInfo2.setText("2. Lampu 2 berhasil dinyalakan");
+//                }else if(cek2==101){
+//                    imgInfo2.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo2.setText("2. Lampu 2 gagal dinyalakan, silahkan cek lampunya.");
+//                }else if(cek2==111){
+//                    imgInfo2.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo2.setText("2. Lampu 2 berhasil dimatikan");
+//                }else if(cek2==110){
+//                    imgInfo2.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo2.setText("2. Lampu 2 gagal dimatikan, silahkan cek kabel lampunya");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        cekRef3.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+//                int cek3 = dataSnapshot.getValue(int.class);
+//                if(cek3==100){
+//                    imgInfo3.setBackgroundResource(R.drawable.sukses);
+//                    txtInfo3.setText("3. Lampu 3 berhasil dinyalakan");
+//                }else if(cek3==101){
+//                    imgInfo3.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo3.setText("3. Lampu 3 gagal dinyalakan, silahkan cek lampunya.");
+//                }else if(cek3==111){
+//                    imgInfo3.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo3.setText("3. Lampu 3 berhasil dimatikan");
+//                }else if(cek3==110){
+//                    imgInfo3.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo3.setText("3. Lampu 3 gagal dimatikan, silahkan cek kabel lampunya");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        cekRef4.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
+//                int cek4 = dataSnapshot.getValue(int.class);
+//                if(cek4==100){
+//                    imgInfo4.setBackgroundResource(R.drawable.sukses);
+//                    txtInfo4.setText("4. Lampu 4 berhasil dinyalakan");
+//                }else if(cek4==101){
+//                    imgInfo4.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo4.setText("4. Lampu 4 gagal dinyalakan, silahkan cek lampunya.");
+//                }else if(cek4==111){
+//                    imgInfo4.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo4.setText("4. Lampu 4 berhasil dimatikan");
+//                }else if(cek4==110){
+//                    imgInfo4.setBackgroundResource(R.drawable.gagal);
+//                    txtInfo4.setText("4. Lampu 4 gagal dimatikan, silahkan cek kabel lampunya");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
     @Override
@@ -253,5 +292,10 @@ public class cekLampu extends AppCompatActivity {
             winParams.flags &= ~bits;
         }
         win.setAttributes(winParams);
+    }
+
+    @Override
+    public void onDataClick(final ModelLampu lampu, int position) {
+
     }
 }

@@ -3,11 +3,13 @@ package com.evanfauzi.lampu;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,10 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.evanfauzi.lampu.adapter.KetAdapter;
 import com.evanfauzi.lampu.adapter.MainAdapter;
 import com.evanfauzi.lampu.holder.MainViewHolder;
 import com.evanfauzi.lampu.model.ModelLampu;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,18 +43,25 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements MainAdapter.FirebaseDataListener {
+public class MainActivity extends AppCompatActivity implements MainAdapter.FirebaseDataListener, KetAdapter.FirebaseDataListener {
     private RecyclerView mRecyclerView;
+    private RecyclerView ketRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private MainAdapter mAdapter;
+    private KetAdapter ketAdapter;
     private ArrayList<ModelLampu> daftarLampu;
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseInstance;
     ToggleButton btn;
     private ModelLampu mlampu;
     private MainViewHolder holder;
+    // ambil tanggal
+    SimpleDateFormat tanggalNow = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    Date mDate = new Date();
 
     ImageButton cekLampu;
     Intent cekLampuIntent;
@@ -94,6 +106,10 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
         layoutManager = new GridLayoutManager(this,2);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        ketRecyclerView = findViewById(R.id.recyclerKetView);
+        ketRecyclerView.setHasFixedSize(true);
+        ketRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         ToggleButton btn = findViewById(R.id.off_button);
 
         FirebaseApp.initializeApp(this);
@@ -106,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
                 daftarLampu = new ArrayList<>();
                 for (DataSnapshot mDataSnapshot : dataSnapshot.getChildren()) {
                     ModelLampu lampu = mDataSnapshot.getValue(ModelLampu.class);
+
                     lampu.setKey(mDataSnapshot.getKey());
                     daftarLampu.add(lampu);
 //                    if (lampu.getNilai()=="0"){
@@ -117,8 +134,12 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
 //                    }
                 }
 
-                mAdapter = new MainAdapter(MainActivity.this, daftarLampu);
+                mAdapter = new MainAdapter(MainActivity.this, daftarLampu,mDatabaseReference);
                 mRecyclerView.setAdapter(mAdapter);
+
+                ketAdapter = new KetAdapter(MainActivity.this, daftarLampu);
+                ketRecyclerView.setAdapter(ketAdapter);
+
             }
 
             @Override
@@ -143,122 +164,68 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
         win.setAttributes(winParams);
     }
 
-    @Override
-    public void onDataClick(final ModelLampu lampu, int position) {
-//        TextView txtInfo = findViewById(R.id.txtInfo);
-//        ToggleButton btn = findViewById(R.id.off_button);
-//        simpanDataLampu(lampu);
-
-        btn = findViewById(R.id.off_button);
-//        holder.tombol = findViewById(position);
-        Log.d("onDataClick", "Ini posisi = " + position);
-        Log.d("lampuGet", "get lampu Key = " + lampu.getKey());
-        Log.d("lampuGet", "get lampu Nilai = " + lampu.getNilai());
-        Log.d("lampuGet", "get lampu No = " + lampu.getNo());
-        Log.d("lampuGet", "get lampu Kondisi = " + lampu.getKondisi());
-        Log.d("lampuBTN", "button = " + btn);
-
-        Log.d("lampuHolder","holder = " + holder.tombol);
-
-        //        RecyclerView rcView = findViewById(R.id.recyclerView);
-//        RelativeLayout rlView = findViewById(R.id.toggle);
-//        View viewItem = rcView.getLayoutManager().findViewByPosition(position);
-
-//        ToggleButton btn = findViewById(R.id.off_button);
-//        daftarLampu = new ArrayList<>();
-//                for (DataSnapshot mDataSnapshot : dataSnapshot.getChildren()) {
-//                    ModelLampu lampu = mDataSnapshot.getValue(ModelLampu.class);
-//                    lampu.setKey(mDataSnapshot.getKey());
-//                    daftarLampu.add(lampu);
-//                    if (lampu.getNilai()=="0"){
-//                        btn.setChecked(true);
-//                        btn.setBackgroundResource(R.drawable.on1);
-//                    }else if (lampu.getNilai()=="1"){
-//                        btn.setChecked(false);
-//                        btn.setBackgroundResource(R.drawable.off1);
-//                    }
-//                }
+//    @Override
+//    public void onDataClick(final ModelLampu lampu, int position) {
 //
-//                mAdapter = new MainAdapter(MainActivity.this, daftarLampu);
-//                mRecyclerView.setAdapter(mAdapter);
-
-//        Tholder.tombol.setChecked(false);
-//            holder.tombol.setBackgroundResource(R.drawable.off1);
-//        ToggleButton btn = findViewById(position);
-
-//        String nilai = (String) lampu.getNilai();
-//        int i = Integer.parseInt(nilai);
-//        if (i==0){
-//            btn.setChecked(true);
-//            btn.setBackgroundResource(R.drawable.on1);
-//        }else if (i==1){
-//            btn.setChecked(false);
-//            btn.setBackgroundResource(R.drawable.off1);
-//        }
-    }
-
-//    private void simpanDataLampu(final ModelLampu lampu){
-//        RelativeLayout grid = (RelativeLayout) findViewById(R.id.toggle);
-//        int childCount = grid.getChildCount();
+//        btn = findViewById(R.id.off_button);
+////        holder.tombol = findViewById(position);
+//        Log.d("onDataClick", "Ini posisi = " + position);
+//        Log.d("lampuGet", "get lampu Key = " + lampu.getKey());
+//        Log.d("lampuGet", "get lampu Nilai = " + lampu.getNilai());
+//        Log.d("lampuGet", "get lampu No = " + lampu.getNamalampu());
+//        Log.d("lampuGet", "get lampu Kondisi = " + lampu.getKondisi());
+//        Log.d("lampuBTN", "button = " + btn);
 //
-//        for (int i=0;i<childCount;i++){
-//            RelativeLayout container = (RelativeLayout) grid.getChildAt(i);
-//            container.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    ToggleButton btn = findViewById(R.id.off_button);
-//                    if (btn.isChecked()){
-//                        btn.setBackgroundResource(R.drawable.on1);
-//                        String kondisi = lampu.getKondisi();
-//                        int no = lampu.getNo();
-//                        lampu.setKondisi(kondisi);
-//                        lampu.setNo(no);
-//                        lampu.setNilai("0");
-//                        updateDataLampu(lampu);
-//                    }else {
-//                        btn.setBackgroundResource(R.drawable.off1);
-//                        String kondisi = lampu.getKondisi();
-//                        int no = lampu.getNo();
-//                        lampu.setKondisi(kondisi);
-//                        lampu.setNo(no);
-//                        lampu.setNilai("1");
-//                        updateDataLampu(lampu);
-//                    }
-//                }
-//            });
-//        }
-//    }
-
-//    private void updateDataLampu(ModelLampu lampu) {
-//        mDatabaseReference.child("lampu").child(lampu.getKey())
-//                .setValue(lampu).addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void mVoid) {
-//                Toast.makeText(MainActivity.this, "Lampu " + lampu.getNo() + " berhasil dinyalakan", Toast.LENGTH_LONG).show();
-//            }
-//        });
+//        Log.d("lampuHolder","holder = " + holder.tombol);
+//
 //    }
 
     @Override
     public void onItemClicked(final ModelLampu lampu, int position) {
-//        btn = findViewById(R.id.off_button);
-        ToggleButton btn2 = holder.itemView.findViewById(R.id.off_button);
-        Log.d("lampuBTN2", "lampu ke- " + btn2);
+        boolean cek = holder.tombol.isChecked();
 
-        String nilai = (String) lampu.getNilai();
-        int i = Integer.parseInt(nilai);
-//
-//        for (int a=0;a<=position;a++){
-//            if()
-//        }
-        if (i==0){
-            btn2.setChecked(true);
-            btn2.setBackgroundResource(R.drawable.on1);
-        }else if (i==1){
-            btn2.setChecked(false);
-            btn2.setBackgroundResource(R.drawable.off1);
+        if(cek){
+            lampu.setNilai(1);
+            lampu.setKondisi("Mati");
+            lampu.setTanggal(tanggalNow.format(mDate));
+        }else{
+            lampu.setNilai(0);
+            lampu.setKondisi("Nyala");
+            lampu.setTanggal(tanggalNow.format(mDate));
         }
 
+        Log.d("TAG", "onItemClicked: "+lampu.getKey());
+        Log.d("TAG", "onItemClicked: "+lampu.getNilai());
+        Log.d("TAG", "onItemClicked: "+lampu.getKondisi());
+        Log.d("TAG", "onItemClicked: "+lampu.getTanggal());
+
+        mDatabaseReference.child("lampu").child(lampu.getKey())
+                .setValue(lampu).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void mVoid) {
+                if(cek){
+                    holder.tombol.setChecked(false);
+                    Toast.makeText(MainActivity.this, "Lampu " + (position+1) + " berhasil di matikan !", Toast.LENGTH_LONG).show();
+                }else{
+                    holder.tombol.setChecked(true);
+                    Toast.makeText(MainActivity.this, "Lampu " + (position+1) + " berhasil di nyalakan !", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if(cek){
+                    holder.tombol.setChecked(false);
+                }else{
+                    holder.tombol.setChecked(true);
+                }
+            }
+        });
     }
 
+    @Override
+    public void onDataClick(final ModelLampu lampu, int position) {
+
+    }
 }

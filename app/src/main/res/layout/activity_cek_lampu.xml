@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_cek"
+    android:orientation="vertical"
     tools:context=".cekLampu">
 
     <LinearLayout
@@ -96,106 +97,124 @@
             android:layout_marginLeft="70dp"/>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imgInfo1"
-        android:layout_width="350dp"
-        android:layout_height="80dp"
-        android:background="@drawable/gagal"
+    <ScrollView
+        android:id="@+id/scrollCekView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
         android:layout_below="@id/layoutText2"
-        android:layout_marginTop="70dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginTop="55dp"
+        android:scrollbars="none">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerCekView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
 
-    <TextView
-        android:id="@+id/txtInfo1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/imgInfo1"
-        android:layout_alignLeft="@id/imgInfo1"
-        android:layout_alignRight="@id/imgInfo1"
-        android:layout_alignBottom="@id/imgInfo1"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="25dp"
-        android:text="@string/tidak_ada_koneksi_internet"
-        android:textColor="@color/white"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/imgInfo1"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:background="@drawable/gagal"-->
+<!--        android:layout_below="@id/layoutText2"-->
+<!--        android:layout_marginTop="70dp"-->
+<!--        android:layout_centerHorizontal="true"/>-->
 
-    <ImageView
-        android:id="@+id/imgInfo2"
-        android:layout_width="350dp"
-        android:layout_height="80dp"
-        android:background="@drawable/gagal"
-        android:layout_below="@id/imgInfo1"
-        android:layout_marginTop="15dp"
-        android:layout_centerHorizontal="true"/>
+<!--    <TextView-->
+<!--        android:id="@+id/txtInfo1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignTop="@id/imgInfo1"-->
+<!--        android:layout_alignLeft="@id/imgInfo1"-->
+<!--        android:layout_alignRight="@id/imgInfo1"-->
+<!--        android:layout_alignBottom="@id/imgInfo1"-->
+<!--        android:layout_marginLeft="70dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:text="@string/tidak_ada_koneksi_internet"-->
+<!--        android:textColor="@color/white"/>-->
 
-    <TextView
-        android:id="@+id/txtInfo2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/imgInfo2"
-        android:layout_alignLeft="@id/imgInfo2"
-        android:layout_alignRight="@id/imgInfo2"
-        android:layout_alignBottom="@id/imgInfo2"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="25dp"
-        android:text="@string/tidak_ada_koneksi_internet"
-        android:textColor="@color/white"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/imgInfo2"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:background="@drawable/gagal"-->
+<!--        android:layout_below="@id/imgInfo1"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_centerHorizontal="true"/>-->
 
-    <ImageView
-        android:id="@+id/imgInfo3"
-        android:layout_width="350dp"
-        android:layout_height="80dp"
-        android:background="@drawable/gagal"
-        android:layout_below="@id/imgInfo2"
-        android:layout_marginTop="15dp"
-        android:layout_centerHorizontal="true"/>
+<!--    <TextView-->
+<!--        android:id="@+id/txtInfo2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignTop="@id/imgInfo2"-->
+<!--        android:layout_alignLeft="@id/imgInfo2"-->
+<!--        android:layout_alignRight="@id/imgInfo2"-->
+<!--        android:layout_alignBottom="@id/imgInfo2"-->
+<!--        android:layout_marginLeft="70dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:text="@string/tidak_ada_koneksi_internet"-->
+<!--        android:textColor="@color/white"/>-->
 
-    <TextView
-        android:id="@+id/txtInfo3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/imgInfo3"
-        android:layout_alignLeft="@id/imgInfo3"
-        android:layout_alignRight="@id/imgInfo3"
-        android:layout_alignBottom="@id/imgInfo3"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="25dp"
-        android:text="@string/tidak_ada_koneksi_internet"
-        android:textColor="@color/white"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/imgInfo3"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:background="@drawable/gagal"-->
+<!--        android:layout_below="@id/imgInfo2"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_centerHorizontal="true"/>-->
 
-    <ImageView
-        android:id="@+id/imgInfo4"
-        android:layout_width="350dp"
-        android:layout_height="80dp"
-        android:background="@drawable/gagal"
-        android:layout_below="@id/imgInfo3"
-        android:layout_marginTop="15dp"
-        android:layout_centerHorizontal="true"/>
+<!--    <TextView-->
+<!--        android:id="@+id/txtInfo3"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignTop="@id/imgInfo3"-->
+<!--        android:layout_alignLeft="@id/imgInfo3"-->
+<!--        android:layout_alignRight="@id/imgInfo3"-->
+<!--        android:layout_alignBottom="@id/imgInfo3"-->
+<!--        android:layout_marginLeft="70dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:text="@string/tidak_ada_koneksi_internet"-->
+<!--        android:textColor="@color/white"/>-->
 
-    <TextView
-        android:id="@+id/txtInfo4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/imgInfo4"
-        android:layout_alignLeft="@id/imgInfo4"
-        android:layout_alignRight="@id/imgInfo4"
-        android:layout_alignBottom="@id/imgInfo4"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="25dp"
-        android:text="@string/tidak_ada_koneksi_internet"
-        android:textColor="@color/white"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/imgInfo4"-->
+<!--        android:layout_width="350dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:background="@drawable/gagal"-->
+<!--        android:layout_below="@id/imgInfo3"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_centerHorizontal="true"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/txtInfo4"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignTop="@id/imgInfo4"-->
+<!--        android:layout_alignLeft="@id/imgInfo4"-->
+<!--        android:layout_alignRight="@id/imgInfo4"-->
+<!--        android:layout_alignBottom="@id/imgInfo4"-->
+<!--        android:layout_marginLeft="70dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:text="@string/tidak_ada_koneksi_internet"-->
+<!--        android:textColor="@color/white"/>-->
 
     <TextView
         android:id="@+id/txtKet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgInfo4"
+        android:layout_below="@id/scrollCekView"
         android:text="Keterangan :
         \nJika notifikasi dan sensor tidak berubah maka perangkat NodeMCU tidak menyala atau tidak tersambung koneksi internet"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="35dp"
         android:textSize="13sp"
         android:layout_marginLeft="20dp"
         android:textColor="@color/black"/>
