@@ -1,2 +1,2 @@
 # Lampu
-Aplikasi Kontrol Lampu
+Aplikasi Kontrol Lampu dinamis dengan RecyclerView dan CardView
