@@ -1,31 +1,27 @@
 package com.evanfauzi.lampu;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
-
+import com.evanfauzi.lampu.adapter.CekAdapter;
 import com.evanfauzi.lampu.adapter.KetAdapter;
 import com.evanfauzi.lampu.adapter.MainAdapter;
 import com.evanfauzi.lampu.holder.MainViewHolder;
@@ -39,15 +35,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.techiness.progressdialoglibrary.ProgressDialog;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements MainAdapter.FirebaseDataListener, KetAdapter.FirebaseDataListener {
+//import android.app.ProgressDialog;
+
+public class MainActivity extends AppCompatActivity implements MainAdapter.FirebaseDataListener, KetAdapter.FirebaseDataListener{
     private RecyclerView mRecyclerView;
     private RecyclerView ketRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -55,6 +53,16 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
     private KetAdapter ketAdapter;
     private ArrayList<ModelLampu> daftarLampu;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference relay1;
+    private DatabaseReference relay2;
+    private DatabaseReference relay3;
+    private DatabaseReference relay4;
+    private DatabaseReference relay5;
+    private DatabaseReference relay6;
+    private DatabaseReference relay7;
+    private DatabaseReference relay8;
+    private DatabaseReference relay9;
+    private DatabaseReference relay10;
     private FirebaseDatabase mFirebaseInstance;
     ToggleButton btn;
     private ModelLampu mlampu;
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
 
     ImageButton cekLampu;
     Intent cekLampuIntent;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +100,23 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
+        progressDialog = new ProgressDialog(this);
         cekLampu = findViewById(R.id.cek_lampu);
         cekLampu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cekLampuIntent = new Intent(MainActivity.this, cekLampu.class);
-                startActivity(cekLampuIntent);
-                finish();
+                progressDialog.setMessage("Silahkan Tunggu...");
+                progressDialog.show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        cekLampuIntent = new Intent(MainActivity.this, cekLampu.class);
+                        startActivity(cekLampuIntent);
+                        finish();
+                    }
+                }, 10000);
             }
         });
 
@@ -114,6 +133,17 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
 
         FirebaseApp.initializeApp(this);
         mFirebaseInstance = FirebaseDatabase.getInstance();
+        relay1 = mFirebaseInstance.getReference("relay1");
+        relay2 = mFirebaseInstance.getReference("relay2");
+        relay3 = mFirebaseInstance.getReference("relay3");
+        relay4 = mFirebaseInstance.getReference("relay4");
+        relay5 = mFirebaseInstance.getReference("relay5");
+        relay6 = mFirebaseInstance.getReference("relay6");
+        relay7 = mFirebaseInstance.getReference("relay7");
+        relay8 = mFirebaseInstance.getReference("relay8");
+        relay9 = mFirebaseInstance.getReference("relay9");
+        relay10 = mFirebaseInstance.getReference("relay10");
+
         mDatabaseReference = mFirebaseInstance.getReference("data_lampu");
         mDatabaseReference.child("lampu").addValueEventListener(new ValueEventListener() {
             @Override
@@ -204,9 +234,51 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
             @Override
             public void onSuccess(Void mVoid) {
                 if(cek){
+                    if(position==0){
+                        relay1.setValue(1);
+                    }else if(position==1){
+                        relay2.setValue(1);
+                    }else if(position==2){
+                        relay3.setValue(1);
+                    }else if(position==3){
+                        relay4.setValue(1);
+                    }else if(position==4){
+                        relay5.setValue(1);
+                    }else if(position==5){
+                        relay6.setValue(1);
+                    }else if(position==6){
+                        relay7.setValue(1);
+                    }else if(position==7){
+                        relay8.setValue(1);
+                    }else if(position==8){
+                        relay9.setValue(1);
+                    }else if(position==9){
+                        relay10.setValue(1);
+                    }
                     holder.tombol.setChecked(false);
                     Toast.makeText(MainActivity.this, "Lampu " + (position+1) + " berhasil di matikan !", Toast.LENGTH_LONG).show();
                 }else{
+                    if(position==0){
+                        relay1.setValue(0);
+                    }else if(position==1){
+                        relay2.setValue(0);
+                    }else if(position==2){
+                        relay3.setValue(0);
+                    }else if(position==3){
+                        relay4.setValue(0);
+                    }else if(position==4){
+                        relay5.setValue(0);
+                    }else if(position==5){
+                        relay6.setValue(0);
+                    }else if(position==6){
+                        relay7.setValue(0);
+                    }else if(position==7){
+                        relay8.setValue(0);
+                    }else if(position==8){
+                        relay9.setValue(0);
+                    }else if(position==9){
+                        relay10.setValue(0);
+                    }
                     holder.tombol.setChecked(true);
                     Toast.makeText(MainActivity.this, "Lampu " + (position+1) + " berhasil di nyalakan !", Toast.LENGTH_LONG).show();
                 }
@@ -228,4 +300,5 @@ public class MainActivity extends AppCompatActivity implements MainAdapter.Fireb
     public void onDataClick(final ModelLampu lampu, int position) {
 
     }
+
 }

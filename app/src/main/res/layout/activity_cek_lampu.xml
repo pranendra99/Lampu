@@ -102,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_below="@id/layoutText2"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="65dp"
         android:scrollbars="none">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerCekView"
@@ -214,7 +214,7 @@
         android:layout_below="@id/scrollCekView"
         android:text="Keterangan :
         \nJika notifikasi dan sensor tidak berubah maka perangkat NodeMCU tidak menyala atau tidak tersambung koneksi internet"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="25dp"
         android:textSize="13sp"
         android:layout_marginLeft="20dp"
         android:textColor="@color/black"/>

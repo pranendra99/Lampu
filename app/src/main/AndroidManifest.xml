@@ -9,7 +9,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Lampu">
-        <activity android:name=".cekLampu"></activity>
+        <activity android:name=".ProgressDialog"></activity>
+        <activity android:name=".cekLampu" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

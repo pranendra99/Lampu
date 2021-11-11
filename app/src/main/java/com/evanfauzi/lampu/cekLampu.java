@@ -46,19 +46,29 @@ public class cekLampu extends AppCompatActivity implements CekAdapter.FirebaseDa
     TextView txtArus;
     TextView txtTegangan;
     TextView txtDaya;
-    TextView txtInfo1;
-    TextView txtInfo2;
-    TextView txtInfo3;
-    TextView txtInfo4;
-    ImageView imgInfo1;
-    ImageView imgInfo2;
-    ImageView imgInfo3;
-    ImageView imgInfo4;
+//    TextView txtInfo1;
+//    TextView txtInfo2;
+//    TextView txtInfo3;
+//    TextView txtInfo4;
+//    ImageView imgInfo1;
+//    ImageView imgInfo2;
+//    ImageView imgInfo3;
+//    ImageView imgInfo4;
     Intent back;
     private RecyclerView cekRecyclerView;
     private CekAdapter cekAdapter;
     private ArrayList<ModelLampu> daftarLampu;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference cek1;
+    private DatabaseReference cek2;
+    private DatabaseReference cek3;
+    private DatabaseReference cek4;
+    private DatabaseReference cek5;
+    private DatabaseReference cek6;
+    private DatabaseReference cek7;
+    private DatabaseReference cek8;
+    private DatabaseReference cek9;
+    private DatabaseReference cek10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +119,16 @@ public class cekLampu extends AppCompatActivity implements CekAdapter.FirebaseDa
 //        DatabaseReference cekRef2 = fireBase.getReference("cek2");
 //        DatabaseReference cekRef3 = fireBase.getReference("cek3");
 //        DatabaseReference cekRef4 = fireBase.getReference("cek4");
+        cek1 = fireBase.getReference("cek1");
+        cek2 = fireBase.getReference("cek2");
+        cek3 = fireBase.getReference("cek3");
+        cek4 = fireBase.getReference("cek4");
+        cek5 = fireBase.getReference("cek5");
+        cek6 = fireBase.getReference("cek6");
+        cek7 = fireBase.getReference("cek7");
+        cek8 = fireBase.getReference("cek8");
+        cek9 = fireBase.getReference("cek9");
+        cek10 = fireBase.getReference("cek10");
         mDatabaseReference = fireBase.getReference("data_lampu").child("lampu");
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -119,7 +139,7 @@ public class cekLampu extends AppCompatActivity implements CekAdapter.FirebaseDa
                     lampu.setKey(mDataSnapshot.getKey());
                     daftarLampu.add(lampu);
                 }
-                cekAdapter = new CekAdapter(cekLampu.this, daftarLampu, mDatabaseReference);
+                cekAdapter = new CekAdapter(cekLampu.this, daftarLampu, mDatabaseReference, cek1, cek2, cek3, cek4, cek5, cek6, cek7, cek8, cek9, cek10);
                 cekRecyclerView.setAdapter(cekAdapter);
             }
 
